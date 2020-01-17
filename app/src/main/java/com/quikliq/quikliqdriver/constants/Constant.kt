@@ -5,19 +5,7 @@ import java.util.ArrayList
 
 
 object Constant {
-    val BASE_URL = "http://freechatup.website/weed/api/index.php/"    //production
-
-    //*******production********//
-    val GIFT_BASE_URL = "https://v2.tamakoshiapp.com/"
-    val WEB_SOCKET_URL = "ws://13.231.212.195:5000/"
-    val LOGIN_BEARER = "Basic cnhlZ25iWVRMa1ppT2hOc2M2M1lzSVQxNjVkTmZHeE12ZW56cjZNajpvVXVhNDdhVzRYWHp2dXVsZ3dDOEVFc3htdDlvRE1ZUHIxQzBQT0dvNlVtcXM0Sw=="
-
-
-    //*******development********//
-//    val GIFT_BASE_URL = "https://debug.tamakoshiapp.com/"
-//    val WEB_SOCKET_URL = "ws://45.32.120.241:5000/"
-//    val LOGIN_BEARER = "Basic QjRjYTRPMDRKckFBMjFVd3hTdThsa2puYXlRRW9jdVVKU3BmMTNuTjp4V014QnRTeUtqbmJhVmpuT2c0VGVPaGRsWkg3SElEYUYwUlI2ZEpnemwxSXRVZ1ZzNjZtdmhHbkEwcmZtbWNWNFF2MkFFdmJnaDNucWVKSkoyMkRpWHl2d0syRWt4enRtcDE4N3JMajFLcGpqQ2M0b1c2N2VXSGtnaVVRWDM2WQ=="
-
+    val BASE_URL = "https://professionaler.com/weed/api/index.php/"     //production
 
     val DEVICE_UNIQUE_ID = "device_unique_id"
     val UN_AUTHORIZE = 401

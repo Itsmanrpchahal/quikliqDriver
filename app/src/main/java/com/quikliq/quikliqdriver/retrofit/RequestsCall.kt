@@ -19,7 +19,7 @@ class RequestsCall {
     fun login(mobile: String, password: String, device_type : String, device_token : String): Call<JsonObject> {
         val apiCall = ApiCall()
         val api = apiCall.apiCall().create(ApiHelper::class.java)
-        return api.login("UserLogin",mobile, password, device_type, device_token)
+        return api.login("UserLogin",mobile, password, device_type, device_token,"3")
     }
 
     fun signup(first_name: String, last_name: String, email : String, password : String): Call<JsonObject> {
@@ -123,22 +123,22 @@ class RequestsCall {
         return api.UpdateProfileWithoutImage("UpdateProfile",userid,firstname,lastname,email)
     }
 
-    fun GetAllProduct(userid: String): Call<JsonObject> {
+    fun UploadIdProof(
+        context: Context,
+        userid: String,
+        type: String,
+        image: Uri?
+    ): Call<JsonObject> {
         val apiCall = ApiCall()
         val api = apiCall.apiCall().create(ApiHelper::class.java)
-        return api.GetAllProduct("GetAllProduct",userid)
-    }
-
-    fun ProductDetail(userid: String, productid: String): Call<JsonObject> {
-        val apiCall = ApiCall()
-        val api = apiCall.apiCall().create(ApiHelper::class.java)
-        return api.ProductDetail("ProductDetail",userid, productid)
-    }
-
-    fun DeleteProduct(userid: String,productyid: String): Call<JsonObject> {
-        val apiCall = ApiCall()
-        val api = apiCall.apiCall().create(ApiHelper::class.java)
-        return api.DeleteProduct("DeleteProduct",userid,productyid)
+        val imageCompressor = ImageCompressor()
+        val path = imageCompressor.compressImage(context, image.toString())
+        val fbody = RequestBody.create(MediaType.parse("multipart/form-data"), File(path))
+        val body = MultipartBody.Part.createFormData("image",  File(path).name, fbody)
+        val method1 = RequestBody.create(MediaType.parse("text/plain"), "UploadIdProof")
+        val user_id = RequestBody.create(MediaType.parse("text/plain"), userid)
+        val type = RequestBody.create(MediaType.parse("text/plain"), type)
+        return api.UploadIdProof(method1,user_id,type,body)
     }
 
 }

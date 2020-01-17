@@ -11,7 +11,7 @@ interface ApiHelper {
 
     @FormUrlEncoded
     @POST(".")
-    fun login(@Field("method") UserLogin: String ,@Field("mobile") mobile: String, @Field("password") password: String, @Field("devicetype") devicetype: String, @Field("devicetoken") devicetoken: String): Call<JsonObject>
+    fun login(@Field("method") UserLogin: String ,@Field("mobile") mobile: String, @Field("password") password: String, @Field("devicetype") devicetype: String, @Field("devicetoken") devicetoken: String,@Field("usetype") usertype: String): Call<JsonObject>
 
     @FormUrlEncoded
     @POST(".")
@@ -67,5 +67,12 @@ interface ApiHelper {
     @FormUrlEncoded
     @POST(".")
     fun DeleteProduct(@Field("method") DeleteProduct: String ,@Field("userid") userid: String, @Field("productyid") productyid: String): Call<JsonObject>
+
+
+
+    @Multipart
+    @POST(".")
+    fun UploadIdProof(@Part("method") UploadIdProof: RequestBody ,@Part("userid") userid: RequestBody ,@Part("proof_type") proof_type: RequestBody , @Part files: MultipartBody.Part): Call<JsonObject>
+
 
 }

@@ -8,12 +8,15 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import com.google.gson.JsonObject
 import com.quikliq.quikliqdriver.R
+import com.quikliq.quikliqdriver.constants.Constant
+import com.quikliq.quikliqdriver.utilities.Prefs
 import com.quikliq.quikliqdriver.utilities.Utility
 import kotlinx.android.synthetic.main.activity__register.*
 import org.json.JSONException
@@ -95,24 +98,80 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
             requestsCall.signup(firstName, lastName, registerEmail, password_ET).enqueue(object : Callback<JsonObject> {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                   pd!!.dismiss()
                     if (response.isSuccessful) {
                         val responsedata = response.body().toString()
                         try {
                             val jsonObject = JSONObject(responsedata)
                             if (jsonObject.optBoolean("status")) {
-                                startActivity(
-                                    Intent(
-                                        this@RegisterActivity,
-                                        AddDocumentsActivity::class.java
-                                    ).putExtra("mobile", phone_number).putExtra("otp", otp).putExtra(
-                                        "FirstName",
-                                        firstName
-                                    ).putExtra("LastName", lastName).putExtra("Email", registerEmail).putExtra(
-                                        "password",
-                                        password_ET
-                                    )
-                                )
+
+                                requestsCall.saveAdditionalDetail("1", firstName, lastName,phone_number!!, registerEmail, password_ET,"", "", "", "","1","3",Prefs.getString(Constant.FCM_TOKEN, "")).enqueue(object : Callback<JsonObject> {
+                                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                                    override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                                        pd!!.dismiss()
+                                        if (response.isSuccessful) {
+                                            val responsedata = response.body().toString()
+                                            Log.d("response",response.body().toString())
+                                            try {
+                                                val jsonObject = JSONObject(responsedata)
+                                                if (jsonObject.optBoolean("status")) {
+                                                    Prefs.putString("userid",jsonObject.optJSONObject("data").optString("userid"))
+                                                    Prefs.putString("FirstName",jsonObject.optJSONObject("data").optString("FirstName"))
+                                                    Prefs.putString("LastName",jsonObject.optJSONObject("data").optString("LastName"))
+                                                    Prefs.putString("Mobile",jsonObject.optJSONObject("data").optString("Mobile"))
+                                                    Prefs.putString("Email", jsonObject.optJSONObject("data").optString("Email"))
+                                                    Prefs.putString("BusinesNname",jsonObject.optJSONObject("data").optString("BusinesNname"))
+                                                    Prefs.putString("BankName", jsonObject.optJSONObject("data").optString("BankName"))
+                                                    Prefs.putString("AccountNumber",jsonObject.optJSONObject("data").optString("AccountNumber"))
+                                                    Prefs.putString("IFSC",jsonObject.optJSONObject("data").optString("IFSC"))
+                                                    Prefs.putString("Address",jsonObject.optJSONObject("data").optString("Address"))
+                                                    Prefs.putString("UserType",jsonObject.optJSONObject("data").optString("UserType"))
+                                                    Prefs.putString("profileimage",jsonObject.optJSONObject("data").optString("profileimage"))
+                                                    Prefs.putBoolean(Constant.IS_LOGGED_IN, true)
+                                                    startActivity(
+                                                        Intent(
+                                                            this@RegisterActivity,
+                                                            AddDocumentsActivity::class.java
+                                                        ).putExtra("mobile", phone_number).putExtra("otp", otp).putExtra(
+                                                            "FirstName",
+                                                            firstName
+                                                        ).putExtra("LastName", lastName).putExtra("Email", registerEmail).putExtra(
+                                                            "password",
+                                                            password_ET
+                                                        )
+                                                    )
+                                                    finish()
+                                                } else {
+                                                    utility!!.relative_snackbar(
+                                                        parent_signup!!,
+                                                        jsonObject.optString("message"),
+                                                        getString(R.string.close_up)
+                                                    )
+                                                }
+
+                                            } catch (e: JSONException) {
+                                                e.printStackTrace()
+                                            }
+
+                                        }else{
+                                            utility!!.relative_snackbar(
+                                                parent_signup!!,
+                                                response.message(),
+                                                getString(R.string.close_up)
+                                            )
+                                        }
+
+                                    }
+
+                                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                                        pd!!.dismiss()
+                                        utility!!.relative_snackbar(
+                                            parent_signup!!,
+                                            getString(R.string.no_internet_connectivity),
+                                            getString(R.string.close_up)
+                                        )
+                                    }
+                                })
+                                
                             } else {
                                 utility!!.relative_snackbar(
                                     parent_signup!!,
@@ -157,5 +216,5 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         val imm = this@RegisterActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
     }
-
+   
 }

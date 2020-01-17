@@ -7,10 +7,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.quikliq.quikliqdriver.R;
 import com.quikliq.quikliqdriver.utilities.Prefs;
 import com.quikliq.quikliqdriver.activities.HomeActivity;
 import com.quikliq.quikliqdriver.constants.Constant;
@@ -38,11 +42,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             title = object.optString("title","");
             actionCode = object.optString("action_code", "");
             msg = object.optString("body", "");
-            if (remoteMessage.getData().containsKey("badge")) {
-                badge = Integer.parseInt(remoteMessage.getData().get("badge"));
-                setBadge(getApplicationContext(), badge);
-                Prefs.putBoolean(Constant.INSTANCE.getHAS_BADGE(),true);
-            }
             if (!(title.equals("") && msg.equals("") && actionCode.equals(""))) {
                 createNotification(actionCode, msg, title);
             }
@@ -56,45 +55,45 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.putExtra(Constant.INSTANCE.getACTION_CODE(), action_code);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            NotificationChannel androidChannel = new NotificationChannel(CHANNEL_ID,
-//                    title, NotificationManager.IMPORTANCE_DEFAULT);
-//            androidChannel.enableLights(true);
-//            androidChannel.enableVibration(true);
-//            androidChannel.setLightColor(Color.GREEN);
-//            androidChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-//            getManager().createNotificationChannel(androidChannel);
-//            Notification.Builder nb = new Notification.Builder(getApplicationContext(), CHANNEL_ID)
-//                    .setContentTitle(title)
-//                    .setContentText(msg)
-//                    .setTicker(title)
-//                    .setShowWhen(true)
-//                    .setSmallIcon(R.mipmap.ic_small_notification)
-//                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
-//                            R.mipmap.ic_launcher_round))
-//                    .setAutoCancel(true)
-//                    .setContentIntent(contentIntent);
-//            getManager().notify(101, nb.build());
+            NotificationChannel androidChannel = new NotificationChannel(CHANNEL_ID,
+                    title, NotificationManager.IMPORTANCE_DEFAULT);
+            androidChannel.enableLights(true);
+            androidChannel.enableVibration(true);
+            androidChannel.setLightColor(Color.GREEN);
+            androidChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            getManager().createNotificationChannel(androidChannel);
+            Notification.Builder nb = new Notification.Builder(getApplicationContext(), CHANNEL_ID)
+                    .setContentTitle(title)
+                    .setContentText(msg)
+                    .setTicker(title)
+                    .setShowWhen(true)
+                    .setSmallIcon(R.mipmap.lock)
+                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
+                            R.mipmap.ic_launcher_round))
+                    .setAutoCancel(true)
+                    .setContentIntent(contentIntent);
+            getManager().notify(101, nb.build());
 
         } else {
-//            try {
-//                @SuppressLint({"NewApi", "LocalSuppress"}) android.support.v4.app.NotificationCompat.Builder notificationBuilder = new android.support.v4.app.NotificationCompat.Builder(this).setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
-//                        .setSmallIcon(R.mipmap.ic_small_notification)
-//                        .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
-//                                R.mipmap.ic_launcher_round))
-//                        .setContentTitle(title)
-//                        .setTicker(title)
-//                        .setContentText(msg)
-//                        .setShowWhen(true)
-//                        .setContentIntent(contentIntent)
-//                        .setLights(0xFF760193, 300, 1000)
-//                        .setAutoCancel(true).setVibrate(new long[]{200, 400});
-//                        /*.setSound(Uri.parse("android.resource://"
-//                                + getApplicationContext().getPackageName() + "/" + R.raw.tone));*/
-//                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//                notificationManager.notify((int) System.currentTimeMillis() /* ID of notification */, notificationBuilder.build());
-//            } catch (SecurityException se) {
-//                se.printStackTrace();
-//            }
+            try {
+                @SuppressLint({"NewApi", "LocalSuppress"}) NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this).setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                        .setSmallIcon(R.mipmap.lock)
+                        .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
+                                R.mipmap.ic_launcher_round))
+                        .setContentTitle(title)
+                        .setTicker(title)
+                        .setContentText(msg)
+                        .setShowWhen(true)
+                        .setContentIntent(contentIntent)
+                        .setLights(0xFF760193, 300, 1000)
+                        .setAutoCancel(true).setVibrate(new long[]{200, 400});
+                        /*.setSound(Uri.parse("android.resource://"
+                                + getApplicationContext().getPackageName() + "/" + R.raw.tone));*/
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify((int) System.currentTimeMillis() /* ID of notification */, notificationBuilder.build());
+            } catch (SecurityException se) {
+                se.printStackTrace();
+            }
         }
     }
 

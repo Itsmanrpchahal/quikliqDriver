@@ -6,7 +6,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.iid.FirebaseInstanceId
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsOptions
 import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsRequest
@@ -19,6 +21,12 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity__splash)
         methodRequiresPermissions()
+        FirebaseInstanceId.getInstance()
+            .instanceId.addOnSuccessListener(this) { instanceIdResult ->
+            val newToken = instanceIdResult.token
+            Prefs.putString(Constant.FCM_TOKEN, newToken)
+        }
+        Log.d("token",Prefs.getString(Constant.FCM_TOKEN, ""))
     }
 
     /**
@@ -44,7 +52,7 @@ class SplashActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             if (Prefs.getBoolean(Constant.IS_LOGGED_IN, false)) {
-                startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
+                startActivity(Intent(this@SplashActivity, AddDocumentsActivity::class.java))
             } else {
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             }

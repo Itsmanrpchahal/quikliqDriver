@@ -13,6 +13,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.JsonObject
 import com.quikliq.quikliqdriver.R
 import com.quikliq.quikliqdriver.utilities.Prefs
@@ -41,6 +42,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         forgotPasswordLayout.setOnClickListener(this)
         signUp_RL.setOnClickListener(this)
         nextScreen.setOnClickListener(this)
+        FirebaseInstanceId.getInstance()
+            .instanceId.addOnSuccessListener(this) { instanceIdResult ->
+            val newToken = instanceIdResult.token
+            Prefs.putString(Constant.FCM_TOKEN, newToken)
+        }
     }
 
     override fun onClick(p0: View?) {
@@ -74,7 +80,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             pd!!.show()
             pd!!.setContentView(R.layout.loading)
             val requestsCall = RequestsCall()
-            requestsCall.login(username, password, "1", "tokensbhhdghdghdc").enqueue(object : Callback<JsonObject> {
+            requestsCall.login(username, password, "1", Prefs.getString(Constant.FCM_TOKEN, "")).enqueue(object : Callback<JsonObject> {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                     pd!!.dismiss()
@@ -101,7 +107,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                                 startActivity(
                                     Intent(
                                         this@LoginActivity,
-                                        HomeActivity::class.java
+                                        AddDocumentsActivity::class.java
                                     ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                 )
                                 finish()

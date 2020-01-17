@@ -43,6 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <RelativeLayout
+                        android:id="@+id/picture"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:padding="@dimen/dim_10dp"
@@ -61,6 +62,7 @@
 
 
                     <ImageView
+                            android:id="@+id/pictureIV"
                             android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/ic_arrow_forward_black_24dp"
@@ -75,6 +77,7 @@
                         android:layout_height="1dp"/>
 
                 <RelativeLayout
+                        android:id="@+id/policeVerification"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:padding="@dimen/dim_10dp"
@@ -83,7 +86,7 @@
                     <TextView
                             android:textSize="22sp"
                             android:textColor="@android:color/black"
-                            android:text="Police verification Certificate"
+                            android:text="Police verification"
                             android:layout_centerVertical="true"
                             android:layout_gravity="center_vertical"
                             android:background="@android:color/transparent"
@@ -93,6 +96,7 @@
 
 
                     <ImageView
+                            android:id="@+id/policeVerificationIV"
                             android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/ic_arrow_forward_black_24dp"
@@ -109,6 +113,7 @@
                         android:layout_height="1dp"/>
 
                 <RelativeLayout
+                        android:id="@+id/driverliscense"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:padding="@dimen/dim_10dp"
@@ -127,6 +132,7 @@
 
 
                     <ImageView
+                            android:id="@+id/driverliscenseIV"
                             android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/ic_arrow_forward_black_24dp"
@@ -141,6 +147,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="1dp"/>
                 <RelativeLayout
+                        android:id="@+id/vehicleinsurance"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:padding="@dimen/dim_10dp"
@@ -159,6 +166,7 @@
 
 
                     <ImageView
+                            android:id="@+id/vehicleinsuranceIV"
                             android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/ic_arrow_forward_black_24dp"
@@ -174,6 +182,7 @@
                         android:layout_height="1dp"/>
 
                 <RelativeLayout
+                        android:id="@+id/vehiclepermit"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:padding="@dimen/dim_10dp"
@@ -192,6 +201,7 @@
 
 
                     <ImageView
+                            android:id="@+id/vehiclepermitIV"
                             android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/ic_arrow_forward_black_24dp"
@@ -209,6 +219,7 @@
 
 
                 <RelativeLayout
+                        android:id="@+id/vehicleregistration"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:padding="@dimen/dim_10dp"
@@ -227,6 +238,7 @@
 
 
                     <ImageView
+                            android:id="@+id/vehicleregistrationIV"
                             android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/ic_arrow_forward_black_24dp"
