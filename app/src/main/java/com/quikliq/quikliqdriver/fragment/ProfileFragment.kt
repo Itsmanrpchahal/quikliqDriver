@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.gson.JsonObject
@@ -20,6 +21,7 @@ import com.quikliq.quikliqdriver.R
 import com.quikliq.quikliqdriver.activities.*
 import com.quikliq.quikliqdriver.utilities.Prefs
 import com.quikliq.quikliqdriver.utilities.Utility
+import kotlinx.android.synthetic.main.fragment_profile.*
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit.RequestsCall
@@ -41,12 +43,14 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private var contact_us_TV: TextView? = null
     private var toolbar_title: TextView? = null
     private var sign_out_Tv:TextView? = null
+    private var statusSwitch:SwitchCompat? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         parent_profile = view.findViewById(R.id.parent_profile)
         userName_profile_TV = view.findViewById(R.id.userName_profile_TV)
         user_image_IV = view.findViewById(R.id.user_image_IV)
+        statusSwitch = view.findViewById(R.id.statusSwitch)
         utility = Utility()
         pd = ProgressDialog(activity)
         pd!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -68,14 +72,21 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         sign_out_Tv?.setOnClickListener(this)
         your_review_Tv?.setOnClickListener(this)
         profileApiCall()
+        statusSwitch!!.setOnCheckedChangeListener { _, b ->
+            if (b) {
+                UpdateDriverStatusApiCall("1")
+            } else {
+                UpdateDriverStatusApiCall("0")
+            }
+        }
         return view
     }
 
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.edit_BT -> startActivity(Intent(activity,EditProfileActivity::class.java))
-//            R.id.order_history_TV -> startActivity(Intent(activity,OrderHistoryActivity::class.java))
-//            R.id.your_review_Tv -> startActivity(Intent(activity,PaymentsActivity::class.java))
+            R.id.order_history_TV -> startActivity(Intent(activity,AddDocumentsActivity::class.java))
+            R.id.your_review_Tv -> startActivity(Intent(activity,OrderHistory::class.java))
             R.id.change_password_TV -> startActivity(Intent(activity,ChangePasswordActivity::class.java))
             R.id.contact_us_TV -> startActivity(Intent(activity,ContactUsActivity::class.java))
             R.id.about_Tv -> Log.d("about", "about")
@@ -105,8 +116,20 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                     if (response.isSuccessful) {
                         Log.d("responsedata", response.body().toString())
                         val responsedata = response.body().toString()
+
                         try {
+
                             val jsonObject = JSONObject(responsedata)
+                            val status = jsonObject.optJSONObject("data").getInt("driver_status")
+
+                            if(status==1)
+                            {
+                                statusSwitch?.isChecked = true
+                            }else
+                            {
+                                statusSwitch?.isChecked = false
+                            }
+
                             if (jsonObject.optBoolean("status")) {
                                 userName_profile_TV!!.text =
                                     jsonObject.optJSONObject("data").optString("FirstName") + " " + jsonObject.optJSONObject(
@@ -172,6 +195,43 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 getString(R.string.close_up)
             )
         }
+    }
+
+    private fun UpdateDriverStatusApiCall(s: String) {
+
+        if (utility!!.isConnectingToInternet(context)) {
+            pd!!.show()
+            pd!!.setContentView(R.layout.loading)
+            val requestsCall = RequestsCall()
+            requestsCall.setDriverStatus(Prefs.getString("userid",""),s).enqueue(object : Callback<JsonObject>
+            {
+                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                    pd!!.dismiss()
+                    if (response.isSuccessful)
+                    {
+                        Log.d("status",""+response.body())
+                        val responsedata = response.body().toString()
+                        val jsonObject = JSONObject(responsedata)
+
+                        utility!!.linear_snackbar(
+                            parent_profile!!,
+                            jsonObject.optString("message"),
+                            getString(R.string.close_up)
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                    pd!!.dismiss()
+                    utility!!.linear_snackbar(
+                        parent_profile!!,
+                        getString(R.string.no_internet_connectivity),
+                        getString(R.string.close_up)
+                    )
+                }
+            })
+        }
+
     }
 
     private fun logoutApiCall() {

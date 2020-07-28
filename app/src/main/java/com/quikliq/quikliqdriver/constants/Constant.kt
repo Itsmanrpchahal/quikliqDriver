@@ -5,7 +5,8 @@ import java.util.ArrayList
 
 
 object Constant {
-    val BASE_URL = "https://professionaler.com/weed/api/index.php/"     //production
+    // val BASE_URL = "https://professionaler.com/weed/api/index.php/"     //production
+    val BASE_URL = "https://hotspotcover.com/weed/api/"     //production
 
     val DEVICE_UNIQUE_ID = "device_unique_id"
     val UN_AUTHORIZE = 401

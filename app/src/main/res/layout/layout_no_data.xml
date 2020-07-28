@@ -30,6 +30,7 @@
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+        android:padding="@dimen/dim_10dp"
             android:layout_below="@+id/titleTV"
             android:layout_centerHorizontal="true"
             android:text="Please Add product"/>

@@ -13,4 +13,5 @@
 
     <string name="pass_same"><![CDATA[New password & confirm password not same]]></string>
     <string name="error_password">password should be greater than 6 chacters</string>
+    <string name="Rejectbyadmin">Reject by admin</string>
 </resources>

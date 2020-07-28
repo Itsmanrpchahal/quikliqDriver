@@ -107,7 +107,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                                 startActivity(
                                     Intent(
                                         this@LoginActivity,
-                                        AddDocumentsActivity::class.java
+                                        HomeActivity::class.java
                                     ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                 )
                                 finish()

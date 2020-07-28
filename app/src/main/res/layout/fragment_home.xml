@@ -2,18 +2,27 @@
 
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent" android:layout_height="match_parent">
 
     <include layout="@layout/toolbar"
-             android:id="@+id/toolbar"/>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvHome"
-            android:scrollbars="vertical"
-            android:layout_width="fill_parent"
+            android:id="@+id/toolbar"/>
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            style="@style/MyCustomTabLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_below="@+id/toolbar"/>
+            android:layout_below="@+id/toolbar"
+            app:tabTextColor="@android:color/darker_gray"/>
+
+    <com.quikliq.quikliqdriver.utilities.CustomViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/tab_layout"
+            android:overScrollMode="never"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+
+    <include layout="@layout/layout_no_data"></include>
 </RelativeLayout>

@@ -17,14 +17,16 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity__otp)
+        otp = intent.getStringExtra("otp")
+        phone_number = intent.getStringExtra("mobile")
+
         utility = Utility()
         utility!!.relative_snackbar(
             parent_otp!!,
-            "Your OTP is" + intent.getStringExtra("otp"),
+            "OTP sent to "+phone_number,
             getString(R.string.close_up)
         )
-        otp = intent.getStringExtra("otp")
-        phone_number = intent.getStringExtra("mobile")
+
         nextScreen.setOnClickListener(this)
     }
 
@@ -42,7 +44,7 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
                 otp_ET.error = getString(R.string.txt_Error_required)
             }
             else -> when (otp_ET.text.toString()) {
-                otp -> startActivity(Intent(this@OtpActivity, RegisterActivity::class.java).putExtra("mobile",phone_number).putExtra("otp",otp))
+                otp -> startActivity(Intent(this@OtpActivity, RegisterActivity::class.java).putExtra("mobile",phone_number).putExtra("otp",otp).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK))
                 else ->  utility!!.relative_snackbar(parent_otp!!, "Wrong OTP", getString(R.string.close_up))
             }
         }

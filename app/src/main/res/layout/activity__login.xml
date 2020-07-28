@@ -1,160 +1,184 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto" android:background="@color/colorPrimary"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/parent_login">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/parent_login"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/colorPrimary">
+
     <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:fillViewport="true">
+
         <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
+
             <ImageView
                     android:id="@+id/logo"
-                    android:background="@drawable/img_marijuana"
                     android:layout_width="150dp"
                     android:layout_height="130dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
-                    android:layout_centerHorizontal="true"/>
+                    android:background="@drawable/img_marijuana" />
+
             <RelativeLayout
                     android:id="@+id/signInLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="250dp"
+                    android:layout_below="@+id/logo"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="30dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_below="@+id/logo">
+                    android:layout_marginRight="10dp">
+
                 <RelativeLayout
-                        android:background="@drawable/content_background"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/content_background">
+
                     <LinearLayout
-                            android:orientation="vertical"
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
                         <LinearLayout
-                                android:orientation="horizontal"
                                 android:layout_width="fill_parent"
-                                android:layout_height="70dp">
+                                android:layout_height="70dp"
+                                android:orientation="horizontal">
+
                             <ImageView
-                                    android:layout_gravity="center"
-                                    android:background="@drawable/ic_user"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
-                                    android:layout_margin="10dp"/>
-                            <com.google.android.material.textfield.TextInputLayout
                                     android:layout_gravity="center"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/ic_user" />
+
+                            <com.google.android.material.textfield.TextInputLayout
                                     android:id="@+id/input_layout_username"
                                     android:layout_width="fill_parent"
-                                    android:layout_height="45dp">
+                                    android:layout_height="45dp"
+                                    android:layout_gravity="center">
+
                                 <EditText
-                                        android:textSize="14dp"
-                                        android:textColor="#ff000000"
-                                        android:textColorHint="#ff696969"
                                         android:id="@+id/loginUsername"
-                                        android:background="@android:color/transparent"
                                         android:layout_width="fill_parent"
                                         android:layout_height="fill_parent"
                                         android:layout_marginLeft="5dp"
+                                        android:background="@android:color/transparent"
                                         android:hint="Phone Number"
+                                        android:imeOptions="actionNext"
                                         android:inputType="phone"
-                                        android:imeOptions="actionNext"/>
+                                        android:textColor="#ff000000"
+                                        android:textColorHint="#ff696969"
+                                        android:textSize="14dp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
+
                         <View
-                                android:background="#ffd3d3d3"
                                 android:layout_width="fill_parent"
-                                android:layout_height="1dp"/>
+                                android:layout_height="1dp"
+                                android:background="#ffd3d3d3" />
+
                         <LinearLayout
-                                android:orientation="horizontal"
                                 android:layout_width="fill_parent"
-                                android:layout_height="70dp">
+                                android:layout_height="70dp"
+                                android:orientation="horizontal">
+
                             <ImageView
-                                    android:layout_gravity="center"
-                                    android:background="@drawable/ic_lock"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
-                                    android:layout_margin="10dp"/>
-                            <com.google.android.material.textfield.TextInputLayout
                                     android:layout_gravity="center"
+                                    android:layout_margin="10dp"
+                                    android:background="@drawable/ic_lock" />
+
+                            <com.google.android.material.textfield.TextInputLayout
                                     android:id="@+id/input_layout_password"
                                     android:layout_width="fill_parent"
-                                    android:layout_height="45dp">
+                                    android:layout_height="45dp"
+                                    android:layout_gravity="center">
+
                                 <EditText
-                                        android:textSize="14dp"
-                                        android:textColor="#ff000000"
-                                        android:textColorHint="#ff696969"
                                         android:id="@+id/loginPassword"
-                                        android:background="@android:color/transparent"
                                         android:layout_width="fill_parent"
                                         android:layout_height="fill_parent"
                                         android:layout_marginLeft="5dp"
+                                        android:background="@android:color/transparent"
                                         android:hint="PASSWORD"
-                                        android:maxLength="15"
+                                        android:imeOptions="actionDone"
                                         android:inputType="textPassword"
-                                        android:imeOptions="actionDone"/>
+                                        android:maxLength="15"
+                                        android:textColor="#ff000000"
+                                        android:textColorHint="#ff696969"
+                                        android:textSize="14dp" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
+
                         <View
-                                android:background="#ffd3d3d3"
                                 android:layout_width="fill_parent"
-                                android:layout_height="1dp"/>
+                                android:layout_height="1dp"
+                                android:background="#ffd3d3d3" />
+
                         <RelativeLayout
-                                android:orientation="horizontal"
                                 android:id="@+id/forgotPasswordLayout"
                                 android:layout_width="fill_parent"
-                                android:layout_height="70dp">
+                                android:layout_height="70dp"
+                                android:orientation="horizontal">
+
                             <TextView
-                                    android:textSize="14dp"
-                                    android:textColor="#ff000000"
                                     android:id="@+id/txtForgotPassword"
-                                    android:padding="5dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
                                     android:layout_marginLeft="25dp"
+                                    android:padding="5dp"
                                     android:text="Forgot Password?"
-                                    android:layout_centerVertical="true"/>
+                                    android:textColor="#ff000000"
+                                    android:textSize="14dp" />
                         </RelativeLayout>
                     </LinearLayout>
                 </RelativeLayout>
+
                 <ImageView
                         android:id="@+id/nextScreen"
-                        android:background="@drawable/send_btn"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
                         android:layout_marginRight="20dp"
                         android:layout_marginBottom="12dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"/>
+                        android:background="@drawable/send_btn" />
             </RelativeLayout>
+
             <LinearLayout
-                    android:gravity="center"
-                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="30dp"
-                    android:layout_below="@+id/signInLayout">
+                    android:layout_below="@+id/signInLayout"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
                 <TextView
-                        android:textSize="16dp"
-                        android:textColor="#ffffffff"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Don't have an Account?"/>
+                        android:gravity="center"
+                        android:text="Don't have an Account?"
+                        android:textColor="#ffffffff"
+                        android:textSize="16dp" />
+
                 <RelativeLayout
                         android:id="@+id/signUp_RL"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp">
+
                     <TextView
-                            android:textSize="16dp"
-                            android:textColor="#ffffffff"
-                            android:gravity="center"
                             android:id="@+id/signUp"
-                            android:padding="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
-                            android:text=" Signup"/>
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text=" Signup"
+                            android:textColor="#ffffffff"
+                            android:textSize="16dp" />
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>

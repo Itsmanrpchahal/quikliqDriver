@@ -46,32 +46,13 @@ class RequestsCall {
         return api.profile("UserProfile",userID)
     }
 
-    fun AddProduct(
-        context: Context,
-        userid: String,
-        category: String,
-        productname: String,
-        price: String,
-        quantity: String,
-        description: String,
-        image: Uri?
-    ): Call<JsonObject> {
+    fun setDriverStatus(userid: String,status: String):Call<JsonObject>
+    {
         val apiCall = ApiCall()
         val api = apiCall.apiCall().create(ApiHelper::class.java)
-        val imageCompressor = ImageCompressor()
-        val path = imageCompressor.compressImage(context, image.toString())
-        val fbody = RequestBody.create(MediaType.parse("multipart/form-data"), File(path))
-        val body = MultipartBody.Part.createFormData("image",  File(path).name, fbody)
-        val method1 = RequestBody.create(MediaType.parse("text/plain"), "AddProduct")
-        val user_id = RequestBody.create(MediaType.parse("text/plain"), userid)
-        val cat = RequestBody.create(MediaType.parse("text/plain"), category)
-        val product_name = RequestBody.create(MediaType.parse("text/plain"), productname)
-        val cost = RequestBody.create(MediaType.parse("text/plain"), price)
-        val qty = RequestBody.create(MediaType.parse("text/plain"), quantity)
-        val desc = RequestBody.create(MediaType.parse("text/plain"), description)
-
-        return api.AddProduct(method1,user_id,cat,product_name,cost,qty,desc,body)
+        return api.setDriverStatus("UpdateDriverstatus",userid,status)
     }
+
 
 
     fun UpdateProfile(
@@ -123,6 +104,18 @@ class RequestsCall {
         return api.UpdateProfileWithoutImage("UpdateProfile",userid,firstname,lastname,email)
     }
 
+    fun DriverOrderRequest(userid: String): Call<JsonObject> {
+        val apiCall = ApiCall()
+        val api = apiCall.apiCall().create(ApiHelper::class.java)
+        return api.DriverOrderRequest("DriverOrderRequest",userid)
+    }
+
+    fun DriverOrderAcceptReject(userid: String,orderid: String, status:String): Call<JsonObject> {
+        val apiCall = ApiCall()
+        val api = apiCall.apiCall().create(ApiHelper::class.java)
+        return api.DriverOrderAcceptReject("DriverOrderAcceptReject",userid,orderid,status)
+    }
+
     fun UploadIdProof(
         context: Context,
         userid: String,
@@ -141,4 +134,40 @@ class RequestsCall {
         return api.UploadIdProof(method1,user_id,type,body)
     }
 
+    fun ProviderRuningOrders(userid: String): Call<JsonObject> {
+        val apiCall = ApiCall()
+        val api = apiCall.apiCall().create(ApiHelper::class.java)
+        return api.ProviderRuningOrders("DriverRunningOrder",userid)
+    }
+
+    fun UpdateOrderStatus(orderid: String, status:String): Call<JsonObject> {
+        val apiCall = ApiCall()
+        val api = apiCall.apiCall().create(ApiHelper::class.java)
+        return api.UpdateOrderStatus("UpdateOrderStatus",orderid,status)
+    }
+
+    fun OrderDelivered(userid: String,orderid: String): Call<JsonObject> {
+        val apiCall = ApiCall()
+        val api = apiCall.apiCall().create(ApiHelper::class.java)
+        return api.OrderDelivered("OrderDelivered",userid,orderid)
+    }
+
+    fun documentStatus(userid: String): Call<JsonObject> {
+        val apiCall = ApiCall()
+        val api = apiCall.apiCall().create(ApiHelper::class.java)
+        return api.documentStatus("DocumentStatus",userid)
+    }
+
+    fun OrderHistory(userID: String): Call<JsonObject> {
+        val apiCall = ApiCall()
+        val api = apiCall.apiCall().create(ApiHelper::class.java)
+        return api.OrderHistory("GetMyOrders",userID)
+    }
+
+    fun IsDiriverVerified(userid: String):Call<JsonObject>
+    {
+        val apiCall = ApiCall()
+        val api = apiCall.apiCall().create(ApiHelper::class.java)
+        return api.IsDriverVerified("DriverStatus",userid)
+    }
 }

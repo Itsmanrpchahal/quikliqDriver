@@ -52,7 +52,7 @@ class SplashActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             if (Prefs.getBoolean(Constant.IS_LOGGED_IN, false)) {
-                startActivity(Intent(this@SplashActivity, AddDocumentsActivity::class.java))
+                startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
             } else {
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             }

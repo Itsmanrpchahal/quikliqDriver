@@ -95,114 +95,195 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
             pd!!.show()
             pd!!.setContentView(R.layout.loading)
             val requestsCall = RequestsCall()
-            requestsCall.signup(firstName, lastName, registerEmail, password_ET).enqueue(object : Callback<JsonObject> {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    if (response.isSuccessful) {
-                        val responsedata = response.body().toString()
-                        try {
-                            val jsonObject = JSONObject(responsedata)
-                            if (jsonObject.optBoolean("status")) {
+            requestsCall.signup(firstName, lastName, registerEmail, password_ET)
+                .enqueue(object : Callback<JsonObject> {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    override fun onResponse(
+                        call: Call<JsonObject>,
+                        response: Response<JsonObject>
+                    ) {
+                        if (response.isSuccessful) {
+                            val responsedata = response.body().toString()
+                            try {
+                                val jsonObject = JSONObject(responsedata)
+                                if (jsonObject.optBoolean("status")) {
 
-                                requestsCall.saveAdditionalDetail("1", firstName, lastName,phone_number!!, registerEmail, password_ET,"", "", "", "","1","3",Prefs.getString(Constant.FCM_TOKEN, "")).enqueue(object : Callback<JsonObject> {
-                                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                                    override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                                        pd!!.dismiss()
-                                        if (response.isSuccessful) {
-                                            val responsedata = response.body().toString()
-                                            Log.d("response",response.body().toString())
-                                            try {
-                                                val jsonObject = JSONObject(responsedata)
-                                                if (jsonObject.optBoolean("status")) {
-                                                    Prefs.putString("userid",jsonObject.optJSONObject("data").optString("userid"))
-                                                    Prefs.putString("FirstName",jsonObject.optJSONObject("data").optString("FirstName"))
-                                                    Prefs.putString("LastName",jsonObject.optJSONObject("data").optString("LastName"))
-                                                    Prefs.putString("Mobile",jsonObject.optJSONObject("data").optString("Mobile"))
-                                                    Prefs.putString("Email", jsonObject.optJSONObject("data").optString("Email"))
-                                                    Prefs.putString("BusinesNname",jsonObject.optJSONObject("data").optString("BusinesNname"))
-                                                    Prefs.putString("BankName", jsonObject.optJSONObject("data").optString("BankName"))
-                                                    Prefs.putString("AccountNumber",jsonObject.optJSONObject("data").optString("AccountNumber"))
-                                                    Prefs.putString("IFSC",jsonObject.optJSONObject("data").optString("IFSC"))
-                                                    Prefs.putString("Address",jsonObject.optJSONObject("data").optString("Address"))
-                                                    Prefs.putString("UserType",jsonObject.optJSONObject("data").optString("UserType"))
-                                                    Prefs.putString("profileimage",jsonObject.optJSONObject("data").optString("profileimage"))
-                                                    Prefs.putBoolean(Constant.IS_LOGGED_IN, true)
-                                                    startActivity(
-                                                        Intent(
-                                                            this@RegisterActivity,
-                                                            AddDocumentsActivity::class.java
-                                                        ).putExtra("mobile", phone_number).putExtra("otp", otp).putExtra(
-                                                            "FirstName",
-                                                            firstName
-                                                        ).putExtra("LastName", lastName).putExtra("Email", registerEmail).putExtra(
-                                                            "password",
-                                                            password_ET
+                                    requestsCall.saveAdditionalDetail(
+                                        "1",
+                                        firstName,
+                                        lastName,
+                                        phone_number!!,
+                                        registerEmail,
+                                        password_ET,
+                                        "",
+                                        "",
+                                        "",
+                                        "",
+                                        "1",
+                                        "3",
+                                        Prefs.getString(Constant.FCM_TOKEN, "")
+                                    ).enqueue(object : Callback<JsonObject> {
+                                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                                        override fun onResponse(
+                                            call: Call<JsonObject>,
+                                            response: Response<JsonObject>
+                                        ) {
+                                            pd!!.dismiss()
+                                            if (response.isSuccessful) {
+                                                val responsedata = response.body().toString()
+                                                Log.d("response", response.body().toString())
+                                                try {
+                                                    val jsonObject = JSONObject(responsedata)
+                                                    if (jsonObject.optBoolean("status")) {
+                                                        Prefs.putString(
+                                                            "userid",
+                                                            jsonObject.optJSONObject("data").optString(
+                                                                "userid"
+                                                            )
                                                         )
-                                                    )
-                                                    finish()
-                                                } else {
-                                                    utility!!.relative_snackbar(
-                                                        parent_signup!!,
-                                                        jsonObject.optString("message"),
-                                                        getString(R.string.close_up)
-                                                    )
+                                                        Prefs.putString(
+                                                            "FirstName",
+                                                            jsonObject.optJSONObject("data").optString(
+                                                                "FirstName"
+                                                            )
+                                                        )
+                                                        Prefs.putString(
+                                                            "LastName",
+                                                            jsonObject.optJSONObject("data").optString(
+                                                                "LastName"
+                                                            )
+                                                        )
+                                                        Prefs.putString(
+                                                            "Mobile",
+                                                            jsonObject.optJSONObject("data").optString(
+                                                                "Mobile"
+                                                            )
+                                                        )
+                                                        Prefs.putString(
+                                                            "Email",
+                                                            jsonObject.optJSONObject("data").optString(
+                                                                "Email"
+                                                            )
+                                                        )
+                                                        Prefs.putString(
+                                                            "BusinesNname",
+                                                            jsonObject.optJSONObject("data").optString(
+                                                                "BusinesNname"
+                                                            )
+                                                        )
+                                                        Prefs.putString(
+                                                            "BankName",
+                                                            jsonObject.optJSONObject("data").optString(
+                                                                "BankName"
+                                                            )
+                                                        )
+                                                        Prefs.putString(
+                                                            "AccountNumber",
+                                                            jsonObject.optJSONObject("data").optString(
+                                                                "AccountNumber"
+                                                            )
+                                                        )
+                                                        Prefs.putString(
+                                                            "IFSC",
+                                                            jsonObject.optJSONObject("data").optString(
+                                                                "IFSC"
+                                                            )
+                                                        )
+                                                        Prefs.putString(
+                                                            "Address",
+                                                            jsonObject.optJSONObject("data").optString(
+                                                                "Address"
+                                                            )
+                                                        )
+                                                        Prefs.putString(
+                                                            "UserType",
+                                                            jsonObject.optJSONObject("data").optString(
+                                                                "UserType"
+                                                            )
+                                                        )
+                                                        Prefs.putString(
+                                                            "profileimage",
+                                                            jsonObject.optJSONObject("data").optString(
+                                                                "profileimage"
+                                                            )
+                                                        )
+                                                        Prefs.putBoolean(
+                                                            Constant.IS_LOGGED_IN,
+                                                            true
+                                                        )
+                                                        startActivity(
+                                                            Intent(
+                                                                this@RegisterActivity,
+                                                                HomeActivity::class.java
+                                                            )
+                                                        )
+                                                        finish()
+                                                    } else {
+                                                        utility!!.relative_snackbar(
+                                                            parent_signup!!,
+                                                            jsonObject.optString("message"),
+                                                            getString(R.string.close_up)
+                                                        )
+                                                    }
+
+                                                } catch (e: JSONException) {
+                                                    e.printStackTrace()
                                                 }
 
-                                            } catch (e: JSONException) {
-                                                e.printStackTrace()
+                                            } else {
+                                                utility!!.relative_snackbar(
+                                                    parent_signup!!,
+                                                    response.message(),
+                                                    getString(R.string.close_up)
+                                                )
                                             }
 
-                                        }else{
+                                        }
+
+                                        override fun onFailure(
+                                            call: Call<JsonObject>,
+                                            t: Throwable
+                                        ) {
+                                            pd!!.dismiss()
                                             utility!!.relative_snackbar(
                                                 parent_signup!!,
-                                                response.message(),
+                                                getString(R.string.no_internet_connectivity),
                                                 getString(R.string.close_up)
                                             )
                                         }
+                                    })
 
-                                    }
+                                } else {
+                                    utility!!.relative_snackbar(
+                                        parent_signup!!,
+                                        jsonObject.optString("message"),
+                                        getString(R.string.close_up)
+                                    )
+                                }
 
-                                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                                        pd!!.dismiss()
-                                        utility!!.relative_snackbar(
-                                            parent_signup!!,
-                                            getString(R.string.no_internet_connectivity),
-                                            getString(R.string.close_up)
-                                        )
-                                    }
-                                })
-                                
-                            } else {
-                                utility!!.relative_snackbar(
-                                    parent_signup!!,
-                                    jsonObject.optString("message"),
-                                    getString(R.string.close_up)
-                                )
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
                             }
 
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
+                        } else {
+                            utility!!.relative_snackbar(
+                                parent_signup!!,
+                                response.message(),
+                                getString(R.string.close_up)
+                            )
                         }
 
-                    }else{
+                    }
+
+                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                        pd!!.dismiss()
                         utility!!.relative_snackbar(
                             parent_signup!!,
-                            response.message(),
+                            getString(R.string.no_internet_connectivity),
                             getString(R.string.close_up)
                         )
                     }
-
-                }
-
-                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                    pd!!.dismiss()
-                    utility!!.relative_snackbar(
-                        parent_signup!!,
-                        getString(R.string.no_internet_connectivity),
-                        getString(R.string.close_up)
-                    )
-                }
-            })
+                })
         } else {
             utility!!.relative_snackbar(
                 parent_signup!!,
@@ -213,8 +294,9 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun hideKeyboard() {
-        val imm = this@RegisterActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            this@RegisterActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
     }
-   
+
 }

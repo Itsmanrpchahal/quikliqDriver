@@ -66,13 +66,48 @@ interface ApiHelper {
 
     @FormUrlEncoded
     @POST(".")
-    fun DeleteProduct(@Field("method") DeleteProduct: String ,@Field("userid") userid: String, @Field("productyid") productyid: String): Call<JsonObject>
+    fun DriverOrderRequest(@Field("method") DriverOrderRequest: String ,@Field("userid") userid: String): Call<JsonObject>
 
+
+    @FormUrlEncoded
+    @POST(".")
+    fun DriverOrderAcceptReject(@Field("method") DriverOrderAcceptReject: String ,@Field("userid") userid: String,@Field("orderid") orderid: String,@Field("status") status: String): Call<JsonObject>
 
 
     @Multipart
     @POST(".")
     fun UploadIdProof(@Part("method") UploadIdProof: RequestBody ,@Part("userid") userid: RequestBody ,@Part("proof_type") proof_type: RequestBody , @Part files: MultipartBody.Part): Call<JsonObject>
 
+    @FormUrlEncoded
+    @POST(".")
+    fun UpdateOrderStatus(@Field("method") UpdateOrderStatus: String, @Field("orderid") orderid: String, @Field("status") status:String ): Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST(".")
+    fun ProviderRuningOrders(@Field("method") ProviderRuningOrders: String, @Field("userid") userid: String): Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST(".")
+    fun OrderDelivered(@Field("method") OrderDelivered: String ,@Field("userid") userid: String,@Field("orderid") orderid: String): Call<JsonObject>
+
+
+    @FormUrlEncoded
+    @POST(".")
+    fun documentStatus(@Field("method") DocumentStatus: String ,@Field("userid") userid: String): Call<JsonObject>
+
+
+
+    @FormUrlEncoded
+    @POST(".")
+    fun OrderHistory(@Field("method") OrderHistory: String ,@Field("userid") userid: String): Call<JsonObject>
+
+
+    @FormUrlEncoded
+    @POST(".")
+    fun IsDriverVerified(@Field("method") DriverStatus : String,@Field("userid") userid: String):Call<JsonObject>
+
+    @FormUrlEncoded
+    @POST(".")
+    fun setDriverStatus(@Field("method") onlineStatus:String,@Field("userid") userid: String,@Field("status") status :String):Call<JsonObject>
 
 }
