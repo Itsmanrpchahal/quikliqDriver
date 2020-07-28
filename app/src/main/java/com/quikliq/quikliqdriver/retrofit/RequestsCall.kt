@@ -120,6 +120,7 @@ class RequestsCall {
         context: Context,
         userid: String,
         type: String,
+        proof_status:String,
         image: Uri?
     ): Call<JsonObject> {
         val apiCall = ApiCall()
@@ -131,7 +132,9 @@ class RequestsCall {
         val method1 = RequestBody.create(MediaType.parse("text/plain"), "UploadIdProof")
         val user_id = RequestBody.create(MediaType.parse("text/plain"), userid)
         val type = RequestBody.create(MediaType.parse("text/plain"), type)
-        return api.UploadIdProof(method1,user_id,type,body)
+        val proof_status = RequestBody.create(MediaType.parse("text/plain"), proof_status)
+
+        return api.UploadIdProof(method1,user_id,type,proof_status,body)
     }
 
     fun ProviderRuningOrders(userid: String): Call<JsonObject> {

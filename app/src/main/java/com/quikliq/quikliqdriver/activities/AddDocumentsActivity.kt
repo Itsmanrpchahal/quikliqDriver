@@ -44,12 +44,13 @@ class AddDocumentsActivity : AppCompatActivity(), View.OnClickListener {
     private var pd: ProgressDialog? = null
     private var outputUri: Uri? = null
     private var type: String = ""
-    private lateinit var picturebanner : Button
-    private lateinit var policeVerificationbanner : Button
-    private lateinit var driverbanner : Button
-    private lateinit var insurancebanner : Button
-    private lateinit var permitbanner : Button
-    private lateinit var registeraitonbanner : Button
+    private var status: String = ""
+    private lateinit var picturebanner: Button
+    private lateinit var policeVerificationbanner: Button
+    private lateinit var driverbanner: Button
+    private lateinit var insurancebanner: Button
+    private lateinit var permitbanner: Button
+    private lateinit var registeraitonbanner: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,8 +79,6 @@ class AddDocumentsActivity : AppCompatActivity(), View.OnClickListener {
 
 
     }
-
-
 
 
     fun pictureSelection() {
@@ -200,32 +199,45 @@ class AddDocumentsActivity : AppCompatActivity(), View.OnClickListener {
         var vehicle_insurance = "vehicle_insurance"
         var vehicle_permit = "vehicle_permit"
         var vehicle_registration = "vehicle_registration"
+
+        var pictutre_status = "pictutre_status"
+        var police_verification_status = "police_verification_status"
+        var driver_license_status = "driver_license_status"
+        var vehicle_insurance_status = "vehicle_insurance_status"
+        var vehicle_permit_status = "vehicle_permit_status"
+        var vehicle_registration_status = "vehicle_registration_status"
     }
 
     override fun onClick(p0: View?) {
         when (p0!!.id) {
             R.id.picture -> {
                 type = pic
+                status = pictutre_status
                 pictureSelection()
             }
             R.id.policeVerification -> {
                 type = police_Verification
+                status = police_verification_status
                 pictureSelection()
             }
             R.id.driverliscense -> {
                 type = driver_liscense
+                status = driver_license_status
                 pictureSelection()
             }
             R.id.vehicleinsurance -> {
                 type = vehicle_insurance
+                status = vehicle_insurance_status
                 pictureSelection()
             }
             R.id.vehiclepermit -> {
                 type = vehicle_permit
+                status = vehicle_permit_status
                 pictureSelection()
             }
             R.id.vehicleregistration -> {
                 type = vehicle_registration
+                status = vehicle_registration_status
                 pictureSelection()
             }
         }
@@ -241,6 +253,7 @@ class AddDocumentsActivity : AppCompatActivity(), View.OnClickListener {
                 this@AddDocumentsActivity,
                 Prefs.getString("userid", ""),
                 type,
+                status,
                 outputUri
             ).enqueue(object : Callback<JsonObject> {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -253,205 +266,28 @@ class AddDocumentsActivity : AppCompatActivity(), View.OnClickListener {
                             val jsonObject = JSONObject(responsedata)
                             if (jsonObject.optBoolean("status")) {
                                 utility!!.linear_snackbar(
-                                   findViewById(android.R.id.content),
+                                    findViewById(android.R.id.content),
                                     jsonObject.optString("message"),
                                     getString(R.string.close_up)
                                 )
-                                /*when {
-                                    type == pic -> pictureIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
-                                    type == police_Verification -> policeVerificationIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
-                                    type == driver_liscense -> driverliscenseIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
-                                    type == vehicle_insurance -> vehicleinsuranceIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
-                                    type == vehicle_permit -> vehiclepermitIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
-                                    type == vehicle_registration -> vehicleregistrationIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
-                                }*/
+                                when {
+                                    type == pic -> picturebanner.visibility = View.VISIBLE
+                                    type == pic ->  picture.isEnabled = false
 
-                            } else {
-                                utility!!.linear_snackbar(
-                                   findViewById(android.R.id.content),
-                                    jsonObject.optString("message"),
-                                    getString(R.string.close_up)
-                                )
-                            }
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                        }
+                                    type == police_Verification -> policeVerificationbanner.visibility = View.VISIBLE
+                                    type == police_Verification -> policeVerification.isEnabled = false
 
-                    } else {
-                        utility!!.linear_snackbar(
-                           findViewById(android.R.id.content),
-                            response.message(),
-                            getString(R.string.close_up)
-                        )
-                    }
+                                    type == driver_liscense -> driverbanner.visibility = View.VISIBLE
+                                    type == driver_liscense -> driverliscense.isEnabled = false
 
-                }
+                                    type == vehicle_insurance -> insurancebanner.visibility = View.VISIBLE
+                                    type == vehicle_insurance -> vehicleinsurance.isEnabled = false
 
-                override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                    pd!!.dismiss()
-                    utility!!.linear_snackbar(
-                       findViewById(android.R.id.content),
-                        getString(R.string.no_internet_connectivity),
-                        getString(R.string.close_up)
-                    )
-                }
-            })
-        } else {
-            utility!!.linear_snackbar(
-               findViewById(android.R.id.content),
-                getString(R.string.no_internet_connectivity),
-                getString(R.string.close_up)
-            )
-        }
-    }
+                                    type == vehicle_permit -> permitbanner.visibility = View.VISIBLE
+                                    type == vehicle_permit -> vehiclepermit.isEnabled = false
 
-
-    private fun documentStatusApiCall() {
-        if (utility!!.isConnectingToInternet(this@AddDocumentsActivity)) {
-            pd!!.show()
-            pd!!.setContentView(R.layout.loading)
-            val requestsCall = RequestsCall()
-            requestsCall.documentStatus(Prefs.getString("userid", "")).enqueue(object : Callback<JsonObject> {
-                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                    pd!!.dismiss()
-                    if (response.isSuccessful) {
-                        Log.d("response", response.body().toString())
-                        val responsedata = response.body().toString()
-                        try {
-                            val jsonObject = JSONObject(responsedata)
-                            if (jsonObject.optBoolean("status")) {
-                                val jsonObject1 = jsonObject.optJSONArray("data").optJSONObject(0)
-
-                                if (jsonObject1.get("profile_picture").equals(null) && jsonObject1.get("picture_status")==0)
-                                {
-                                    picturebanner.visibility = View.GONE
-                                }
-
-
-                               /* if(jsonObject1.optInt("picture_status") == 1 ){
-                                    pictureIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
-                                    picturebanner.visibility = View.VISIBLE
-                                    picture.isEnabled = false
-                                }else if(jsonObject1.optInt("picture_status")==2 && jsonObject1.get("profile_picture").equals(null))
-                                {
-                                    pictureIV.setBackgroundResource(R.drawable.ic_error_outline_black_24dp)
-                                    picturebanner.visibility = View.GONE
-                                    pictureIV.setOnClickListener {
-                                        utility!!.linear_snackbar(
-                                            findViewById(android.R.id.content),
-                                            getString(R.string.Rejectbyadmin),
-                                            getString(R.string.close_up)
-                                        )
-                                    }
-                                }else if ( !jsonObject1.get("profile_picture").equals(""))
-                                {
-                                    picturebanner.visibility = View.VISIBLE
-                                }*/
-
-
-                                if(jsonObject1.optInt("police_verification_status") == 1){
-                                    policeVerificationbanner.visibility = View.VISIBLE
-                                    policeVerificationIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
-                                    policeVerification.isEnabled = false
-                                }else if(jsonObject1.optInt("police_verification_status")==2 && jsonObject1.get("police_verification").equals(null))
-                                {
-                                    policeVerificationbanner.visibility = View.GONE
-                                    policeVerificationIV.setBackgroundResource(R.drawable.ic_error_outline_black_24dp)
-                                    policeVerificationIV.setOnClickListener {
-                                        utility!!.linear_snackbar(
-                                            findViewById(android.R.id.content),
-                                            getString(R.string.Rejectbyadmin),
-                                            getString(R.string.close_up)
-                                        )
-                                    }
-                                }else if (!jsonObject1.getString("police_verification").equals(""))
-                                {
-                                    policeVerificationbanner.visibility = View.VISIBLE
-                                }
-
-
-                                if(jsonObject1.optInt("driver_license_status") == 1){
-                                    driverbanner.visibility = View.VISIBLE
-                                    driverliscenseIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
-                                    driverliscense.isEnabled = false
-                                }else if(jsonObject1.optInt("driver_license_status")==2 && jsonObject1.get("driver_license").equals(null))
-                                {
-                                    driverbanner.visibility = View.GONE
-                                    driverliscenseIV.setBackgroundResource(R.drawable.ic_error_outline_black_24dp)
-                                    driverliscenseIV.setOnClickListener {
-                                        utility!!.linear_snackbar(
-                                            findViewById(android.R.id.content),
-                                            getString(R.string.Rejectbyadmin),
-                                            getString(R.string.close_up)
-                                        )
-                                    }
-                                }else if(!jsonObject1.getString("driver_license").equals(""))
-                                {
-                                    driverbanner.visibility = View.VISIBLE
-                                }
-
-
-                                if(jsonObject1.optInt("vehicle_insurance_status") == 1){
-                                    insurancebanner.visibility = View.VISIBLE
-                                    vehicleinsuranceIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
-                                    vehicleinsurance.isEnabled = false
-                                }else if(jsonObject1.optInt("vehicle_insurance_status")==2 && jsonObject1.get("vehicle_insurance").equals(null))
-                                {
-                                    insurancebanner.visibility = View.GONE
-                                    vehicleinsuranceIV.setBackgroundResource(R.drawable.ic_error_outline_black_24dp)
-                                    vehicleinsuranceIV.setOnClickListener {
-                                        utility!!.linear_snackbar(
-                                            findViewById(android.R.id.content),
-                                            getString(R.string.Rejectbyadmin),
-                                            getString(R.string.close_up)
-                                        )
-                                    }
-                                }else if (!jsonObject1.get("vehicle_insurance").equals(""))
-                                {
-                                    insurancebanner.visibility = View.VISIBLE
-                                }
-
-
-                                if(jsonObject1.optInt("vehicle_permit_status") == 1){
-                                    permitbanner.visibility = View.VISIBLE
-                                    vehiclepermitIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
-                                    vehiclepermit.isEnabled = false
-                                }else if(jsonObject1.optInt("vehicle_permit_status")==2 && jsonObject1.get("vehicle_permit").equals(null))
-                                {
-                                    vehicleinsuranceIV.setBackgroundResource(R.drawable.ic_error_outline_black_24dp)
-                                    permitbanner.visibility = View.GONE
-                                    vehicleinsuranceIV.setOnClickListener {
-                                        utility!!.linear_snackbar(
-                                            findViewById(android.R.id.content),
-                                            getString(R.string.Rejectbyadmin),
-                                            getString(R.string.close_up)
-                                        )
-                                    }
-                                }else if (!jsonObject1.get("vehicle_permit").equals(""))
-                                {
-                                    permitbanner.visibility = View.VISIBLE
-                                }
-
-
-                                if(jsonObject1.optInt("vehicle_registration_status") == 1){
-                                    registeraitonbanner.visibility = View.VISIBLE
-                                    vehicleregistrationIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
-                                    vehicleregistration.isEnabled = false
-                                }else if(jsonObject1.optInt("vehicle_registration_status")==2 && jsonObject1.get("vehicle_registration").equals(null))
-                                {
-                                    registeraitonbanner.visibility = View.GONE
-                                    vehicleregistrationIV.setBackgroundResource(R.drawable.ic_error_outline_black_24dp)
-                                    vehicleregistrationIV.setOnClickListener {
-                                        utility!!.linear_snackbar(
-                                            findViewById(android.R.id.content),
-                                            getString(R.string.Rejectbyadmin),
-                                            getString(R.string.close_up)
-                                        )
-                                    }
-                                }else if(jsonObject1.getString("vehicle_registration").equals(""))
-                                {
-                                    registeraitonbanner.visibility = View.VISIBLE
+                                    type == vehicle_registration -> registeraitonbanner.visibility = View.VISIBLE
+                                    type == vehicle_registration -> vehicleregistration.isEnabled = false
                                 }
 
                             } else {
@@ -484,6 +320,270 @@ class AddDocumentsActivity : AppCompatActivity(), View.OnClickListener {
                     )
                 }
             })
+        } else {
+            utility!!.linear_snackbar(
+                findViewById(android.R.id.content),
+                getString(R.string.no_internet_connectivity),
+                getString(R.string.close_up)
+            )
+        }
+    }
+
+
+    private fun documentStatusApiCall() {
+        if (utility!!.isConnectingToInternet(this@AddDocumentsActivity)) {
+            pd!!.show()
+            pd!!.setContentView(R.layout.loading)
+            val requestsCall = RequestsCall()
+            requestsCall.documentStatus(Prefs.getString("userid", ""))
+                .enqueue(object : Callback<JsonObject> {
+                    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+                    override fun onResponse(
+                        call: Call<JsonObject>,
+                        response: Response<JsonObject>
+                    ) {
+                        pd!!.dismiss()
+                        if (response.isSuccessful) {
+                            Log.d("response", response.body().toString())
+                            val responsedata = response.body().toString()
+                            try {
+                                val jsonObject = JSONObject(responsedata)
+                                if (jsonObject.optBoolean("status")) {
+                                    val jsonObject1 =
+                                        jsonObject.optJSONArray("data").optJSONObject(0)
+
+                                    //ToDo: profile picture case:
+
+                                    if (jsonObject1.get("profile_picture").equals(null) && jsonObject1.getInt(
+                                            "picture_status"
+                                        ) == 0
+                                    ) {
+                                        picturebanner.visibility = View.GONE
+                                    } else if (!jsonObject1.get("profile_picture").equals(null) && jsonObject1.getInt(
+                                            "picture_status"
+                                        ) == 0
+                                    ) {
+                                        picturebanner.visibility = View.VISIBLE
+                                        picture.isEnabled = false
+                                    } else if (!jsonObject1.get("profile_picture").equals(null) && jsonObject1.getInt(
+                                            "picture_status"
+                                        ) == 1
+                                    ) {
+                                        picturebanner.visibility = View.VISIBLE
+                                        pictureIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
+                                        picture.isEnabled = false
+                                    } else if (jsonObject1.getInt("picture_status") == 2) {
+                                        picturebanner.visibility = View.GONE
+                                        pictureIV.setBackgroundResource(R.drawable.ic_error_outline_black_24dp)
+                                        pictureIV.setOnClickListener {
+                                            utility!!.linear_snackbar(
+                                                findViewById(android.R.id.content),
+                                                getString(R.string.Rejectbyadmin),
+                                                getString(R.string.close_up)
+                                            )
+                                        }
+                                        picture.isEnabled = true
+                                    }
+
+                                    //ToDo: police_verification_status case:
+
+                                    if (jsonObject1.get("police_verification").equals(null) && jsonObject1.getInt(
+                                            "police_verification_status"
+                                        ) == 0
+                                    ) {
+                                        policeVerificationbanner.visibility = View.GONE
+                                    } else if (!jsonObject1.get("police_verification").equals(null) && jsonObject1.getInt(
+                                            "police_verification_status"
+                                        ) == 0
+                                    ) {
+                                        policeVerificationbanner.visibility = View.VISIBLE
+                                        policeVerification.isEnabled = false
+                                    } else if (!jsonObject1.get("police_verification").equals(null) && jsonObject1.getInt(
+                                            "police_verification_status"
+                                        ) == 1
+                                    ) {
+                                        policeVerificationbanner.visibility = View.VISIBLE
+                                        policeVerificationIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
+                                        policeVerification.isEnabled = false
+                                    } else if (jsonObject1.getInt("police_verification_status") == 2) {
+                                        policeVerificationbanner.visibility = View.GONE
+                                        policeVerificationIV.setBackgroundResource(R.drawable.ic_error_outline_black_24dp)
+                                        policeVerificationIV.setOnClickListener {
+                                            utility!!.linear_snackbar(
+                                                findViewById(android.R.id.content),
+                                                getString(R.string.Rejectbyadmin),
+                                                getString(R.string.close_up)
+                                            )
+                                        }
+                                        policeVerification.isEnabled = true
+                                    }
+
+
+                                    //ToDo: driver_license_status case:
+
+                                    if (jsonObject1.get("driver_license").equals(null) && jsonObject1.getInt(
+                                            "driver_license_status"
+                                        ) == 0
+                                    ) {
+                                        driverbanner.visibility = View.GONE
+                                    } else if (!jsonObject1.get("driver_license").equals(null) && jsonObject1.getInt(
+                                            "driver_license_status"
+                                        ) == 0
+                                    ) {
+                                        driverbanner.visibility = View.VISIBLE
+                                        driverliscense.isEnabled = false
+                                    } else if (!jsonObject1.get("driver_license").equals(null) && jsonObject1.getInt(
+                                            "driver_license_status"
+                                        ) == 1
+                                    ) {
+                                        driverbanner.visibility = View.VISIBLE
+                                        driverliscenseIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
+                                        driverliscense.isEnabled = false
+                                    } else if (jsonObject1.getInt("driver_license_status") == 2) {
+                                        driverbanner.visibility = View.GONE
+                                        driverliscenseIV.setBackgroundResource(R.drawable.ic_error_outline_black_24dp)
+                                        driverliscenseIV.setOnClickListener {
+                                            utility!!.linear_snackbar(
+                                                findViewById(android.R.id.content),
+                                                getString(R.string.Rejectbyadmin),
+                                                getString(R.string.close_up)
+                                            )
+                                        }
+                                        driverliscense.isEnabled = true
+                                    }
+
+
+                                    //ToDo: vehicle_insurance_status case:
+
+                                    if (jsonObject1.get("vehicle_insurance").equals(null) && jsonObject1.getInt(
+                                            "vehicle_insurance_status"
+                                        ) == 0
+                                    ) {
+                                        insurancebanner.visibility = View.GONE
+                                    } else if (!jsonObject1.get("vehicle_insurance").equals(null) && jsonObject1.getInt(
+                                            "vehicle_insurance_status"
+                                        ) == 0
+                                    ) {
+                                        insurancebanner.visibility = View.VISIBLE
+                                        vehicleinsurance.isEnabled = false
+                                    } else if (!jsonObject1.get("vehicle_insurance").equals(null) && jsonObject1.getInt(
+                                            "vehicle_insurance_status"
+                                        ) == 1
+                                    ) {
+                                        insurancebanner.visibility = View.VISIBLE
+                                        vehicleinsuranceIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
+                                        vehiclepermit.isEnabled = false
+                                    } else if (jsonObject1.getInt("vehicle_insurance_status") == 2) {
+                                        insurancebanner.visibility = View.GONE
+                                        vehicleinsuranceIV.setBackgroundResource(R.drawable.ic_error_outline_black_24dp)
+                                        vehicleinsuranceIV.setOnClickListener {
+                                            utility!!.linear_snackbar(
+                                                findViewById(android.R.id.content),
+                                                getString(R.string.Rejectbyadmin),
+                                                getString(R.string.close_up)
+                                            )
+                                        }
+                                        vehiclepermit.isEnabled = true
+                                    }
+
+
+                                    //ToDo: vehicle_permit_status case:
+
+                                    if (jsonObject1.get("vehicle_permit").equals(null) && jsonObject1.getInt(
+                                            "vehicle_permit_status"
+                                        ) == 0
+                                    ) {
+                                        permitbanner.visibility = View.GONE
+                                    } else if (!jsonObject1.get("vehicle_permit").equals(null) && jsonObject1.getInt(
+                                            "vehicle_permit_status"
+                                        ) == 0
+                                    ) {
+                                        permitbanner.visibility = View.VISIBLE
+                                        vehiclepermit.isEnabled = false
+                                    } else if (!jsonObject1.get("vehicle_permit").equals(null) && jsonObject1.getInt(
+                                            "vehicle_permit_status"
+                                        ) == 1
+                                    ) {
+                                        permitbanner.visibility = View.VISIBLE
+                                        vehiclepermitIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
+                                        vehiclepermit.isEnabled = false
+                                    } else if (jsonObject1.getInt("vehicle_permit_status") == 2) {
+                                        permitbanner.visibility = View.GONE
+                                        vehiclepermitIV.setBackgroundResource(R.drawable.ic_error_outline_black_24dp)
+                                        vehiclepermitIV.setOnClickListener {
+                                            utility!!.linear_snackbar(
+                                                findViewById(android.R.id.content),
+                                                getString(R.string.Rejectbyadmin),
+                                                getString(R.string.close_up)
+                                            )
+                                        }
+                                        permitbanner.isEnabled = true
+                                    }
+
+
+                                    //ToDo: vehicle_registration_status case:
+
+                                    if (jsonObject1.get("vehicle_registration").equals(null) && jsonObject1.getInt(
+                                            "vehicle_registration_status"
+                                        ) == 0
+                                    ) {
+                                        registeraitonbanner.visibility = View.GONE
+                                    } else if (!jsonObject1.get("vehicle_registration").equals(null) && jsonObject1.getInt(
+                                            "vehicle_registration_status"
+                                        ) == 0
+                                    ) {
+                                        registeraitonbanner.visibility = View.VISIBLE
+                                        vehicleregistration.isEnabled = false
+                                    } else if (!jsonObject1.get("vehicle_registration").equals(null) && jsonObject1.getInt(
+                                            "vehicle_registration_status"
+                                        ) == 1
+                                    ) {
+                                        registeraitonbanner.visibility = View.VISIBLE
+                                        vehicleregistrationIV.setBackgroundResource(R.drawable.ic_done_black_24dp)
+                                        vehicleregistration.isEnabled = false
+                                    } else if (jsonObject1.getInt("vehicle_registration_status") == 2) {
+                                        registeraitonbanner.visibility = View.GONE
+                                        vehicleregistrationIV.setBackgroundResource(R.drawable.ic_error_outline_black_24dp)
+                                        vehicleregistrationIV.setOnClickListener {
+                                            utility!!.linear_snackbar(
+                                                findViewById(android.R.id.content),
+                                                getString(R.string.Rejectbyadmin),
+                                                getString(R.string.close_up)
+                                            )
+                                        }
+                                        registeraitonbanner.isEnabled = true
+                                    }
+
+                                } else {
+                                    utility!!.linear_snackbar(
+                                        findViewById(android.R.id.content),
+                                        jsonObject.optString("message"),
+                                        getString(R.string.close_up)
+                                    )
+                                }
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
+                            }
+
+                        } else {
+                            utility!!.linear_snackbar(
+                                findViewById(android.R.id.content),
+                                response.message(),
+                                getString(R.string.close_up)
+                            )
+                        }
+
+                    }
+
+                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                        pd!!.dismiss()
+                        utility!!.linear_snackbar(
+                            findViewById(android.R.id.content),
+                            getString(R.string.no_internet_connectivity),
+                            getString(R.string.close_up)
+                        )
+                    }
+                })
         } else {
             utility!!.linear_snackbar(
                 findViewById(android.R.id.content),

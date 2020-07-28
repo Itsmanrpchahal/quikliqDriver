@@ -76,7 +76,7 @@ interface ApiHelper {
 
     @Multipart
     @POST(".")
-    fun UploadIdProof(@Part("method") UploadIdProof: RequestBody ,@Part("userid") userid: RequestBody ,@Part("proof_type") proof_type: RequestBody , @Part files: MultipartBody.Part): Call<JsonObject>
+    fun UploadIdProof(@Part("method") UploadIdProof: RequestBody, @Part("userid") userid: RequestBody, @Part("proof_type") proof_type: RequestBody, @Part("proof_status") proof_status: RequestBody, @Part files: MultipartBody.Part): Call<JsonObject>
 
     @FormUrlEncoded
     @POST(".")

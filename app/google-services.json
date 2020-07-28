@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "770412071101",
+    "firebase_url": "https://quikliqdriver-ec885.firebaseio.com",
+    "project_id": "quikliqdriver-ec885",
+    "storage_bucket": "quikliqdriver-ec885.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770412071101:android:d38a9cd426f78557bb4fd4",
+        "android_client_info": {
+          "package_name": "com.quikliq.quikliqdriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "770412071101-mvva9uaih4pjmm5n5no7t9l40i117q82.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.quikliq.quikliqdriver",
+            "certificate_hash": "f0c45ab08921ab910c45848534546770b55e5658"
+          }
+        },
+        {
+          "client_id": "770412071101-jvj6sclm0c0s8gn941ukehf9metag86k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6jUKVqDPm7DutVcETh4r4v7tQnhUeyq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "770412071101-jvj6sclm0c0s8gn941ukehf9metag86k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
