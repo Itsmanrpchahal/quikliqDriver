@@ -69,9 +69,6 @@ class HomeFragment : Fragment() {
 
         checkDriverIsVerified()
 
-
-
-
         return view
     }
 

@@ -4,9 +4,14 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +22,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -51,6 +57,9 @@ class AddDocumentsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var insurancebanner: Button
     private lateinit var permitbanner: Button
     private lateinit var registeraitonbanner: Button
+    private var nointernet: RelativeLayout? = null
+    private var screendata: RelativeLayout? = null
+    var notC = "0"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +71,8 @@ class AddDocumentsActivity : AppCompatActivity(), View.OnClickListener {
         insurancebanner = findViewById(R.id.insurancebanner)
         permitbanner = findViewById(R.id.permitbanner)
         registeraitonbanner = findViewById(R.id.registeraitonbanner)
+        nointernet = findViewById(R.id.nointernet)
+        screendata = findViewById(R.id.screendata)
 
         policeVerification.setOnClickListener(this)
         picture.setOnClickListener(this)
@@ -75,9 +86,48 @@ class AddDocumentsActivity : AppCompatActivity(), View.OnClickListener {
         pd!!.window!!.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         pd!!.isIndeterminate = true
         pd!!.setCancelable(false)
-        documentStatusApiCall()
 
 
+
+    }
+
+
+    //Check Internet Connection
+    private var broadcastReceiver : BroadcastReceiver = object : BroadcastReceiver()
+    {
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val notConnected = p1!!.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY,false)
+
+            if (notConnected)
+            {
+                nointernet?.visibility = View.VISIBLE
+                screendata?.visibility = View.GONE
+                notC = "1"
+            }else{
+                nointernet?.visibility = View.GONE
+                screendata?.visibility = View.VISIBLE
+                notC = "0"
+                documentStatusApiCall()
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        registerReceiver(broadcastReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(broadcastReceiver)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if(notC.equals("1"))
+        {
+            finishAffinity()
+        }
     }
 
 

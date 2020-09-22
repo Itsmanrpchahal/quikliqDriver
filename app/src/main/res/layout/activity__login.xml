@@ -6,6 +6,13 @@
         android:layout_height="fill_parent"
         android:background="@color/colorPrimary">
 
+    <include layout="@layout/nointernet"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/screendata">
+
     <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -53,6 +60,18 @@
                                     android:layout_gravity="center"
                                     android:layout_margin="10dp"
                                     android:background="@drawable/ic_user" />
+
+                            <com.hbb20.CountryCodePicker
+                                android:id="@+id/ccp"
+                                app:ccp_hintExampleNumber="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:ccp_showFlag="false"
+                                android:layout_gravity="center_vertical">
+
+                            </com.hbb20.CountryCodePicker>
 
                             <com.google.android.material.textfield.TextInputLayout
                                     android:id="@+id/input_layout_username"
@@ -183,4 +202,6 @@
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
+
+    </RelativeLayout>
 </RelativeLayout>

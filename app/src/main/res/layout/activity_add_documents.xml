@@ -5,6 +5,12 @@
                 android:layout_width="match_parent"
                 android:id="@+id/parent_payment"
                 android:layout_height="match_parent">
+    <include layout="@layout/nointernet"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/screendata">
 
     <ImageView
             android:id="@+id/logo"
@@ -354,4 +360,5 @@
 
         </RelativeLayout>
     </ScrollView>
+    </RelativeLayout>
 </RelativeLayout>

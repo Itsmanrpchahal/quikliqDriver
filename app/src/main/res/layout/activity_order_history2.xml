@@ -6,6 +6,14 @@
               android:id="@+id/parent_order_history"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
+    <include layout="@layout/nointernet"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/screendata">
+
     <include layout="@layout/toolbar"
              android:id="@+id/toolbar"/>
 
@@ -18,4 +26,6 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <include layout="@layout/layout_no_data"></include>
+
+    </RelativeLayout>
 </RelativeLayout>

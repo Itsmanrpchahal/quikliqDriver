@@ -4,6 +4,14 @@
                 android:layout_width="fill_parent"
                 android:id="@+id/parent_otp"
                 android:layout_height="fill_parent">
+
+    <include layout="@layout/nointernet"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/screendata">
+
     <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -76,4 +84,6 @@
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
+
+    </RelativeLayout>
 </RelativeLayout>

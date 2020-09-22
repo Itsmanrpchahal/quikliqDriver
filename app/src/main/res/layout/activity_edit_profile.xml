@@ -6,6 +6,14 @@
               android:id="@+id/parent_edit_profile"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
+    <include layout="@layout/nointernet"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/screendata">
     <include layout="@layout/toolbar"
              android:id="@+id/toolbar"/>
     <ScrollView android:layout_width="match_parent"
@@ -29,7 +37,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_person_black_24dp"
+                    app:srcCompat="@drawable/ic_person_black_24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="h,1:0"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -142,4 +150,6 @@
     </LinearLayout>
 
     </ScrollView>
+
+    </LinearLayout>
 </LinearLayout>

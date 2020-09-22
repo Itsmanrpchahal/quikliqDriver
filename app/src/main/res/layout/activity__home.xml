@@ -5,6 +5,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
+    <include layout="@layout/nointernet"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/screendata">
 
     <FrameLayout android:layout_width="match_parent"
                  android:layout_above="@+id/navigation"
@@ -25,5 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             app:menu="@menu/bottom_navigation_menu_3"/>
+
+    </RelativeLayout>
 </RelativeLayout>
 
